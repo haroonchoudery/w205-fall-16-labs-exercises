@@ -1,0 +1,11 @@
+1. List the HDFS contents of /user
+drwxr-xr-x   - mapred  supergroup          0 2016-09-08 22:47 /user/history
+drwxrwxrwx   - hive    supergroup          0 2016-09-08 22:48 /user/hive
+drwxrwxrwx   - hue     supergroup          0 2016-09-08 22:48 /user/hue
+drwxrwxrwx   - jenkins supergroup          0 2016-09-08 22:48 /user/jenkins
+drwxrwxrwx   - oozie   supergroup          0 2016-09-08 22:49 /user/oozie
+drwxrwxrwx   - root    supergroup          0 2016-09-08 22:48 /user/root
+drwxr-xr-x   - hdfs    supergroup          0 2016-09-08 22:51 /user/spark
+drwxr-xr-x   - w205    supergroup          0 2016-09-08 23:47 /user/w205
+
+2- Inspect the output of the HDFS admin report and answer the following questions in a text file.Q1: How many live datanodes are there? 1Q2: How much non-DFS storage is used? 4.92GBQ3: How much DFS storage is used? 137.39MB
