@@ -1,0 +1,33 @@
+According to my research, the below hospitals represent the top 10 hospitals in our Medicare dataset.
+
+In order to identify the top hospitals in the datset, I established a metric called Hospital Score in the 'hospitals' table. The metric was a summation of the rankings that each hospital received for each given procedure. Each ranking for a given procedure for a given hospital was determined as such: 
+• For each procedure performed at a given hospital, a standardized score was determined by the following formula: 
+	[(raw score - mean score for procedure across all hospitals) / standard deviation for procedure across all hospitals]	
+
+• We then ranked each standardized score, partitioned by procedure. In our case, the lower the rank, the better. 
+
+• If the score was measured as a percentage, ranks were given in an descending manner (lower ranks for lower scores). If the score was measured as a percentage, ranks were given in an ascending manner (lower ranks). If the score was measured as a volume, we ignored it, as it would not have added much insight into our analysis.
+
+• All procedure rankings for a given hospital were then summed up and divided by the number of procedures that were scored for a given hospital to give us our final Hospital Score.
+	[SUM(procedure_rank) / COUNT(procedure_rank)]
+
+We chose to use the standardized score to rank our hospitals for a given procedure in order to eliminate the effects of different magnitudes of numbers as much as possible for our analysis of variances amongst procedures. However, because we end up taking the rank of each hospital for a given procedure anyway, our final Hospital Score metric is no different than if we had chosen to rank by the actual score.
+
+One drawback of using this approach is that we do not assign more weight to the Hospital Score of a hospital that performed well on many procedures as compared to the Hospital Score of a hospital that performed really well on only a few procedures. In fact, if a hospital was only scored on one procedure and scored a perfect score would be ranked #1 in our rankings. We tried to negate this effect by dividing the SUM(procedure_rank) by COUNT(procedure_rank) to get our final Hospital Score but the bulk of our top 10 hospitals still were scored on only one or two procedures.
+
+The hospitals below also meet another condition - they have been scored on at least 5 procedures. This helps ensure that they have been scored on at least a few criteria.
+
+
+BEST HOSPITALS
+
+hospital_id	hospital_name 						hospital_score 			SUM(score) 	AVG(score)
+281354		CRETE AREA MEDICAL CENTER			1.0						700			100.0
+06007F		GRAND JUNCTION VA MEDICAL CENTER	1.0						800			100.0
+201307		MILLINOCKET REGIONAL HOSPITAL		1.0						600			100.0
+141336		ST JOSEPH'S HOSPITAL				1.1						999			99.9
+05114F		VA SAN DIEGO HEALTHCARE SYSTEM		1.125					799			9.875	
+450851		BAYLOR HEART AND VASCULAR HOSPITAL	1.15					1997		99.85
+420102		GHS PATEWOOD MEMORIAL HOSPITAL		1.1666666666666667		1198		99.83333333333333
+030107		ARIZONA SPINE AND JOINT HOSPITAL	1.1818181818181819		1098		99.81818181818181
+170183		KANSAS SURGERY & RECOVERY CENTER	1.1818181818181819		1098		99.81818181818181
+400118		DOCTORS' CENTER HOSPITAL, INC		1.25					1197		99.75
