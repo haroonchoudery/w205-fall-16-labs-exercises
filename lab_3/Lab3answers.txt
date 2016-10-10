@@ -1,0 +1,25 @@
+1. 
+Using Hive: 109.837 seconds
+Using Spark: 29.102 seconds
+weblogs_parquet - 7.349 seconds
+
+2.
+Hive launches 2 jobs
+SparkSQL does not launch jobs
+
+3.
+Query:
+Select location, Count(location) as location_count
+From weblogs_parquet
+Left join user_info on (weblogs_parquet.user_id = user_info.user_id)
+Group by location
+Order by location_count Desc
+Limit 5;
+
+
+Top 5 Locations:
+La Fayette 49
+Leeds 47
+Blountsville 46
+Hamilton 45
+Hayden 45
