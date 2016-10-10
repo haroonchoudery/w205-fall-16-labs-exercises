@@ -1,0 +1,16 @@
+The below procedures have the greatest variability between hospitals. In order to calculate the variability of a given procedure, we first calculate the standardized scores for every procedure in every hospital in our database. This is calculated using the following formula: 
+	[(raw score - mean score of procedure across all hospitals) / standard deviation of procedure across all hospitals] 
+We then ran a query that groups each procedure together, and calculates the variance of all standardized values. The reason we did not calculate the variance of the raw scores is to negate the magnitude effect of the score values.
+
+
+Procedure Name	Variance of Standardized Scores
+Initial antibiotic selection for CAP in immunocompetent patient	0.9997483010319703
+Evaluation of LVS Function	0.9997355197037743
+Immunization for influenza	0.9997325488098678
+Healthcare workers given influenza vaccination	0.9997265518184294
+Venous thromboembolism prophylaxis	0.9997170345218044
+Surgery Patients Who Received Appropriate Venous Thromboembolism Prophylaxis Within 24 Hours Prior to Surgery to 24 Hours After Surgery	0.9997158283603511
+ED1	0.9997155858930621
+ED2	0.9997139588100725
+Prophylactic antibiotic received within 1 hour prior to surgical incision	0.9997123130034409
+Prophylactic antibiotics discontinued within 24 hours after surgery end time	0.9997107318484032

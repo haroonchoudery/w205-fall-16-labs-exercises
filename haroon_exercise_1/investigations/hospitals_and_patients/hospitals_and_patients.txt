@@ -1,0 +1,9 @@
+In order to identify the correlation between hospital quality scores and patient survey response scores, we find the correlation between our Hospital Score values and the HCAHPS Score. The HCAHPS (Hospital Consumer Assessment of Healthcare Provider and Systems) survey is a patient satisfaction survey required for hospitals around the country. There are two components of the HCAHPS - the base score (80 possible points) and the consistency score (20 possible points). We add up the two scores to get a final HCAHPS score and test its correlation to our Hospital Score values.
+
+We anticipate a negative relationship; in our Hospital Scores metric, the better the hospital, the lower the score and in the case of the HCAHPS Score, the higher the score, the better.
+
+We calculate the correlation and get a result of -0.3061629650741831, which indicates a weak negative relationship between the two variables.
+
+This weak relationship can be attributed to many things including the inconsistent data provided to us regarding procedure scores and HCAHPS scores, potential biases in the surveying methods used, and the techniques we used to determine our Hospital Score metric.
+
+We tried manipulating the Hospital Scores metric just a bit by eliminating the denominator from the equation, leaving us with "hospital_score = SUM(procedure_rank)" and when we re-ran the correlation function, we got a stronger correlation of -0.5077228003619667. Although unexpected, this tells us that correlation between average Hospital Score and HCAHPS Score is not as strong as total Hospital Score and HCAHPS.

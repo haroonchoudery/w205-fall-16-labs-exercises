@@ -1,0 +1,14 @@
+In order to identify the top 10 states for high-quality care in our database, we start by grouping all hospitals in our "hospitals" database together by state. We then sum up all Hospital Score values for every hospital in each state and then divide the total score by the number of hospitals in said state. This effectively gives us an average Hospital Score value for each state, which we rank in an ascending order.
+
+
+State	Hospital Score (lower is better)
+NE		9.76763171586824
+VT		10.741470387688873
+IA		12.914973459205484
+ME		13.647267415161835
+WI		13.833953296244877
+GU		14.166666666666666
+MT		14.262358394114575
+NH		15.037340877642139
+ID		15.344551606864847
+WY		15.473290364949777
