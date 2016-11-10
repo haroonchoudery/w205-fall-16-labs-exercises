@@ -1,0 +1,105 @@
+
+(ns tweetcount
+  (:use     [streamparse.specs])
+  (:gen-class))
+
+(defn tweetcount [options]
+   [
+    ;; spout configuration
+    {"sentence-spout" (python-spout-spec
+          options
+          "spouts.sentences.Sentences"
+          ["sentence"]
+          )
+    }
+    ;; bolt configuration 1
+    {"parse-bolt" (python-bolt-spec
+          options
+          {"sentence-spout" :shuffle}
+          "bolts.parse.ParseTweet"
+          ["valid_words"]
+          :p 2
+          )
+	}
+	 ;;bolt configuration 2
+    {"tweetcounter-bolt" (python-bolt-spec
+          options
+          {"parse-bolt" :shuffle}
+          "bolts.tweetcounter.TweetCounter"
+          ["word" "counts"]
+          :p 2
+          )
+    }
+  ]
+)
+
+# sentences.py
+from __future__ import absolute_import,print_function, unicode_literals
+import itertools
+from streamparse.spout import Spout
+class Sentences(Spout):
+        def initialize(self, stormconf, context):
+                self.sentences = [
+"She advised him to take a long holiday, so he immediately quit work and took a trip around the world",
+                        "I was very glad to get a present from her",
+                        "He will be here in half an hour",
+                        "She saw him eating a sandwich",
+                ]
+                self.sentences = itertools.cycle(self.sentences)
+        def next_tuple(self):
+                sentence = next(self.sentences)
+                self.emit([sentence])
+        def ack(self, tup_id):
+                pass # if a tuple is processed properly, do nothing
+        def fail(self, tup_id):
+                pass # if a tuple fails to process, do nothing
+
+# tweetcounter.py
+from __future__ import absolute_import, print_function,
+unicode_literals
+from collections import Counter
+from streamparse.bolt import Bolt
+
+class TweetCounter(Bolt):
+        def initialize(self, conf, ctx):
+                self.counts = Counter()
+
+        def process(self, tup):
+                word = tup.values[0]
+                # Increment the local count
+                self.counts[word] += 1
+                self.emit([word, self.counts[word]])
+                # Log the count - just to see the topology running
+                self.log('%s: %d' % (word, self.counts[word]))
+
+#sentences.py
+
+# parse.py
+from __future__ import absolute_import, print_function,unicode_literals
+import re
+from streamparse.bolt import Bolt
+def ascii_string(s):
+        return all(ord(c) < 128 for c in s)
+class ParseTweet(Bolt):
+        def process(self, tup):
+                tweet = tup.values[0] # extract the tweet
+                # Split the tweet into words
+                words = tweet.split()
+                valid_words = []
+                for word in words:
+                        if word.startswith("#"): continue
+                        # Filter the user mentions
+                        if word.startswith("@"): continue
+                        # Filter out retweet tags
+                        if word.startswith("RT"): continue
+                        # Filter out the urls
+                        if word.startswith("http"): continue
+                        # Strip leading and lagging punctuations
+                        aword = word.strip("\"?><,'.:;)")
+                        # now check if the word contains only ascii
+                        if len(aword) > 0 and ascii_string(word):
+                                valid_words.append([aword])
+                if not valid_words: return
+                # Emit all the words
+                self.emit_many(valid_words)
+                # tuple acknowledgment is handled automatically.
